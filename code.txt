@@ -1,0 +1,40 @@
+#include <Servo.h>
+#include <BlynkSimpleEsp8266.h>
+
+#include "config.h"  
+ //BLYNK_TEMPLATE_ID 
+ //BLYNK_TEMPLATE_NAME 
+ //BLYNK_AUTH_TOKEN 
+ //WIFI_SSID 
+ //WIFI_PASSWORD 
+
+Servo myServo;
+int servoPin = D1;
+int servoPos = 0;
+
+int buttonPin = V0;
+
+int rainSensorPin = D2;
+
+void setup() {
+  myServo.attach(servoPin);
+  Blynk.begin(auth, "WIFI_SSID", "WIFI_PASSWORD");
+  pinMode(buttonPin, INPUT_PULLUP);
+  pinMode(rainSensorPin, INPUT);
+}
+
+void loop() {
+  Blynk.run();
+  if (digitalRead(rainSensorPin) == HIGH) {
+    Blynk.notify("It's raining!");
+  }
+  if (digitalRead(buttonPin) == LOW) {
+    servoPos = 90; 
+    myServo.write(servoPos);
+  }
+  else
+  {
+    servoPos = 0;
+    myservo.write(servoPos);
+  }
+}
