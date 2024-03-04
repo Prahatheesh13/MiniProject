@@ -1,0 +1,44 @@
+#define BLYNK_PRINT Serial
+#include <ESP8266WiFi.h>
+#include <BlynkSimpleEsp8266.h>
+#include <Servo.h>
+
+#include "include.h"
+  //BLYNK_TEMPLATE_ID 
+  //BLYNK_TEMPLATE_NAME 
+  //BLYNK_AUTH_TOKEN 
+  //SSID 
+  //PASSWORD 
+
+Servo servo;
+
+Int enable=13;
+Int led=12;
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(led,OUTPUT);
+  Blynk.begin(BLYNK_AUTH_TOKEN, SSID, PASSWORD);
+  servo.attach(15); 
+}
+
+void loop()
+{
+  Blynk.run();
+  If (Param.asInt==1)
+  {
+    Servo.write(180);
+  }
+  sensorValue2 = analogRead(enable);
+  sensorValue2 = constrain(sensorValue2, 150, 440); 
+  sensorValue2 = map(sensorValue2, 150, 440, 1023, 0); 
+  if (sensorValue2>= 20)
+  {
+    Blynk.logEvent(“Raining”); 
+    digitalWrite(led, HIGH);
+  }
+  else
+  {
+    digitalWrite(led, LOW); 
+  }
+}
